@@ -7,7 +7,7 @@ class SocialProfile < ApplicationRecord
       social_profile.uid = auth.uid
       social_profile.name = auth.info.name
       social_profile.nickname = auth.info.nickname
-      social_profile.email = User.dummy_email(auth)
+      social_profile.email = SocialProfile.dummy_email(auth)
       social_profile.url = auth.info.urls.Twitter
       social_profile.image_url = auth.info.image
       social_profile.description = auth.info.description.try(:truncate, 255)
