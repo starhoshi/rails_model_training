@@ -203,6 +203,7 @@ DEPENDENCIES
   jquery-rails
   listen (~> 3.0.5)
   newrelic_rpm
+  omniauth
   omniauth-twitter
   pg (~> 0.18)
   puma (~> 3.0)

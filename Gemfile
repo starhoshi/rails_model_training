@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'newrelic_rpm'
 gem 'rails_12factor', group: :production
