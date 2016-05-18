@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :devices
   root :to => 'users#index'
   #resources :users
   resources :users, only: [:index, :create, :new]
