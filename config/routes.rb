@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :songs
   resources :devices
   root :to => 'users#index'
   #resources :users
