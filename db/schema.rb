@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515080357) do
+ActiveRecord::Schema.define(version: 20160518132500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "devices", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "os"
+    t.string   "model"
+    t.text     "push_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_devices_on_user_id", using: :btree
+  end
 
   create_table "social_profiles", force: :cascade do |t|
     t.integer  "user_id"
@@ -39,5 +49,6 @@ ActiveRecord::Schema.define(version: 20160515080357) do
     t.text     "auth_token"
   end
 
+  add_foreign_key "devices", "users"
   add_foreign_key "social_profiles", "users"
 end
