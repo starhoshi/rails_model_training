@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     p @user
+    p @profile = SocialProfile.find_by(user_id: @user.id)
   end
 
   # GET /users/new
