@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518151838) do
+ActiveRecord::Schema.define(version: 20160518160611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,11 +20,18 @@ ActiveRecord::Schema.define(version: 20160518151838) do
     t.integer  "user_id"
     t.string   "os"
     t.string   "model"
-    t.text     "push_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["model", "push_token"], name: "index_devices_on_model_and_push_token", unique: true, using: :btree
     t.index ["user_id"], name: "index_devices_on_user_id", using: :btree
+  end
+
+  create_table "push_tokens", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "os"
+    t.string   "push_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_push_tokens_on_user_id", using: :btree
   end
 
   create_table "social_profiles", force: :cascade do |t|
@@ -58,5 +65,6 @@ ActiveRecord::Schema.define(version: 20160518151838) do
   end
 
   add_foreign_key "devices", "users"
+  add_foreign_key "push_tokens", "users"
   add_foreign_key "social_profiles", "users"
 end

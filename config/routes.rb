@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :push_tokens
   resources :songs
   resources :devices
   root :to => 'users#index'
