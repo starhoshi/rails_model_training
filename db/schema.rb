@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518132500) do
+ActiveRecord::Schema.define(version: 20160518151838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20160518132500) do
     t.text     "push_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["model", "push_token"], name: "index_devices_on_model_and_push_token", unique: true, using: :btree
     t.index ["user_id"], name: "index_devices_on_user_id", using: :btree
   end
 
@@ -41,6 +42,13 @@ ActiveRecord::Schema.define(version: 20160518132500) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["user_id"], name: "index_social_profiles_on_user_id", using: :btree
+  end
+
+  create_table "songs", force: :cascade do |t|
+    t.text     "title"
+    t.text     "artist"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
