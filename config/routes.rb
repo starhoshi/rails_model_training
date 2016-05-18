@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :song_histories
   resources :push_tokens
   resources :songs
   resources :devices

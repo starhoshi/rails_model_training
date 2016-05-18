@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518160611) do
+ActiveRecord::Schema.define(version: 20160518165017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,30 @@ ActiveRecord::Schema.define(version: 20160518160611) do
     t.index ["user_id"], name: "index_social_profiles_on_user_id", using: :btree
   end
 
+  create_table "song_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "song_id"
+    t.integer  "device_id"
+    t.string   "media_id"
+    t.string   "track_source"
+    t.string   "album"
+    t.integer  "duration"
+    t.string   "genre"
+    t.string   "album_art_uri"
+    t.integer  "track_number"
+    t.integer  "num_tracks"
+    t.date     "recorded_at"
+    t.point    "point"
+    t.float    "accuracy"
+    t.float    "altitude"
+    t.string   "record_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["device_id"], name: "index_song_histories_on_device_id", using: :btree
+    t.index ["song_id"], name: "index_song_histories_on_song_id", using: :btree
+    t.index ["user_id"], name: "index_song_histories_on_user_id", using: :btree
+  end
+
   create_table "songs", force: :cascade do |t|
     t.text     "title"
     t.text     "artist"
@@ -67,4 +91,7 @@ ActiveRecord::Schema.define(version: 20160518160611) do
   add_foreign_key "devices", "users"
   add_foreign_key "push_tokens", "users"
   add_foreign_key "social_profiles", "users"
+  add_foreign_key "song_histories", "devices"
+  add_foreign_key "song_histories", "songs"
+  add_foreign_key "song_histories", "users"
 end
