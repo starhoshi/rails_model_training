@@ -3,7 +3,7 @@ class SongHistory < ApplicationRecord
   belongs_to :song
   belongs_to :device
 
-  def self.create_by_params(params, user_id, song_id, device_id)
+  def self.create_by_params(params, user_id, device_id, song_id)
     song_history = SongHistory.new do |s|
       s.device_id = device_id
       s.user_id = user_id

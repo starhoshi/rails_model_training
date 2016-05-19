@@ -1,6 +1,6 @@
 class SongHistoriesController < ApplicationController
   before_action :authenticate, only: [:show, :create]
-  before_action :set_song_history, only: [:show, :edit, :update, :destroy]
+  # before_action :set_song_history, only: [:show, :edit, :update, :destroy]
 
   # GET /song_histories
   # GET /song_histories.json
@@ -11,6 +11,7 @@ class SongHistoriesController < ApplicationController
   # GET /song_histories/1
   # GET /song_histories/1.json
   def show
+    p params
   end
 
   # GET /song_histories/new
@@ -32,10 +33,10 @@ class SongHistoriesController < ApplicationController
     respond_to do |format|
       if @song_history.save
         format.html { redirect_to @song_history, notice: 'Song history was successfully created.' }
-        format.json { render :show, status: :created, location: @song_history }
+        format.json { render :nothing => true, status: :created, location: @song_history }
       else
         format.html { render :new }
-        format.json { render json: "aa", status: :unprocessable_entity }
+        format.json { render json: @song_history.errors, status: :unprocessable_entity }
       end
     end
   end
