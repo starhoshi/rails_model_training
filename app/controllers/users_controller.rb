@@ -12,8 +12,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    p @user
-    p @profile = SocialProfile.where(user_id: @user.id)
+    @user
+    @device = Device.where(user_id: @user.id)
+    @profile = SocialProfile.where(user_id: @user.id)
   end
 
   # GET /users/new

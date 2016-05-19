@@ -1,4 +1,7 @@
 json.(@user, :id, :created_at, :updated_at)
-json.profile @profile do |profile|
-  json.(profile, :created_at, :updated_at, :uid, :name, :nickname, :url, :image_url, :description)
+json.profiles @profile do |profile|
+  json.(profile, :id, :created_at, :updated_at, :uid, :name, :nickname, :url, :image_url, :description)
+end
+json.devices @device do |device|
+  json.(device, :id, :created_at, :updated_at, :os, :model)
 end
