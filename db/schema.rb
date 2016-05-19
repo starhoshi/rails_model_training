@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20160518165017) do
     t.string   "album_art_uri"
     t.integer  "track_number"
     t.integer  "num_tracks"
-    t.date     "recorded_at"
+    t.datetime "recorded_at"
     t.point    "point"
     t.float    "accuracy"
     t.float    "altitude"
