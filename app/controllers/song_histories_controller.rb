@@ -25,7 +25,6 @@ class SongHistoriesController < ApplicationController
   # POST /song_histories
   # POST /song_histories.json
   def create
-    p song_history_params[:device][:model]
     @song = Song.find_or_create_from_song(song_history_params[:title], song_history_params[:artist])
     @device = Device.find_or_create(@user.id, song_history_params[:device][:os], song_history_params[:device][:model])
     @song_history = SongHistory.create_by_params(song_history_params,@user.id, @device.id, @song.id)
