@@ -13,7 +13,8 @@ class CreateSongHistories < ActiveRecord::Migration[5.0]
       t.integer :track_number
       t.integer :num_tracks
       t.datetime :recorded_at
-      t.point :point
+      t.float :latitude
+      t.float :longitude
       t.float :accuracy
       t.float :altitude
       t.string :record_type

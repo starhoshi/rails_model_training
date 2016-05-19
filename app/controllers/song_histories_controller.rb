@@ -26,9 +26,9 @@ class SongHistoriesController < ApplicationController
   # POST /song_histories.json
   def create
     p song_history_params[:device][:model]
-    song = Song.find_or_create_from_song(song_history_params[:title], song_history_params[:artist])
-    device = Device.find_or_create(@user.id, song_history_params[:device][:os], song_history_params[:device][:model])
-    @song_history = SongHistory.create_by_params(song_history_params,@user.id, device.id, song.id)
+    @song = Song.find_or_create_from_song(song_history_params[:title], song_history_params[:artist])
+    @device = Device.find_or_create(@user.id, song_history_params[:device][:os], song_history_params[:device][:model])
+    @song_history = SongHistory.create_by_params(song_history_params,@user.id, @device.id, @song.id)
 
     respond_to do |format|
       if @song_history.save
@@ -74,6 +74,6 @@ class SongHistoriesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def song_history_params
       # params.permit!
-      params.permit(:media_id, :track_source, :duration, :genre, :album, :album_art_uri, :track_number, :num_tracks, :recorded_at, {:point => [:latitude, :longitude]}, :accuracy, :altitude, :record_type, {:device => [:model, :os]}, :artist, :title)
+      params.permit(:media_id, :track_source, :duration, :genre, :album, :album_art_uri, :track_number, :num_tracks, :recorded_at, :latitude, :longitude, :accuracy, :altitude, :record_type, {:device => [:model, :os]}, :artist, :title)
     end
 end
