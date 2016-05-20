@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518165017) do
+ActiveRecord::Schema.define(version: 20160520141830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,18 @@ ActiveRecord::Schema.define(version: 20160518165017) do
     t.index ["user_id"], name: "index_social_profiles_on_user_id", using: :btree
   end
 
+  create_table "song_day_counts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "song_id"
+    t.date     "date"
+    t.integer  "skip_count"
+    t.integer  "play_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["song_id"], name: "index_song_day_counts_on_song_id", using: :btree
+    t.index ["user_id"], name: "index_song_day_counts_on_user_id", using: :btree
+  end
+
   create_table "song_histories", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "song_id"
@@ -76,6 +88,17 @@ ActiveRecord::Schema.define(version: 20160518165017) do
     t.index ["user_id"], name: "index_song_histories_on_user_id", using: :btree
   end
 
+  create_table "song_total_counts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "song_id"
+    t.integer  "skip_count"
+    t.integer  "play_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["song_id"], name: "index_song_total_counts_on_song_id", using: :btree
+    t.index ["user_id"], name: "index_song_total_counts_on_user_id", using: :btree
+  end
+
   create_table "songs", force: :cascade do |t|
     t.text     "title"
     t.text     "artist"
@@ -92,7 +115,11 @@ ActiveRecord::Schema.define(version: 20160518165017) do
   add_foreign_key "devices", "users"
   add_foreign_key "push_tokens", "users"
   add_foreign_key "social_profiles", "users"
+  add_foreign_key "song_day_counts", "songs"
+  add_foreign_key "song_day_counts", "users"
   add_foreign_key "song_histories", "devices"
   add_foreign_key "song_histories", "songs"
   add_foreign_key "song_histories", "users"
+  add_foreign_key "song_total_counts", "songs"
+  add_foreign_key "song_total_counts", "users"
 end
