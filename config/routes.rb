@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'ranking',to: 'ranking#index',  defaults: { format: :json }
+
   resources :push_tokens, defaults: { format: :json }
   resources :songs, defaults: { format: :json }
   resources :devices, defaults: { format: :json }
