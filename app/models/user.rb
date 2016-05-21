@@ -9,7 +9,7 @@ class User < ApplicationRecord
   def self.find_or_create_from_token(token)
     self.find_or_create_by(auth_token: token) do |user|
       user.auth_token = SecureRandom.hex(64)
+      user.privacy = Constants::Privacy::PRIVATE
     end
   end
-
 end
