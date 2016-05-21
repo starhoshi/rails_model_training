@@ -33,6 +33,7 @@ class SongHistoriesController < ApplicationController
     respond_to do |format|
       if @song_history.save
         SongDayCount.update_or_create_by_song_history(@song_history)
+        SongTotalCount.update_or_create_by_song_history(@song_history)
         format.html { redirect_to @song_history, notice: 'Song history was successfully created.' }
         format.json { render :nothing => true, status: :created, location: @song_history }
       else
@@ -67,14 +68,14 @@ class SongHistoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_song_history
-      @song_history = SongHistory.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_song_history
+    @song_history = SongHistory.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def song_history_params
-      # params.permit!
-      params.permit(:media_id, :track_source, :duration, :genre, :album, :album_art_uri, :track_number, :num_tracks, :recorded_at, :latitude, :longitude, :accuracy, :altitude, :record_type, {:device => [:model, :os]}, :artist, :title)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def song_history_params
+    # params.permit!
+    params.permit(:media_id, :track_source, :duration, :genre, :album, :album_art_uri, :track_number, :num_tracks, :recorded_at, :latitude, :longitude, :accuracy, :altitude, :record_type, {:device => [:model, :os]}, :artist, :title)
+  end
 end
