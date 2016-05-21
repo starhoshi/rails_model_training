@@ -5,17 +5,32 @@ class SongHistoriesController < ApplicationController
   # GET /song_histories
   # GET /song_histories.json
   def index
-    p params
-    p @song_total_count = SongTotalCount.joins(:song, :user).select('songs.*, song_total_counts.*').where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).first
+    @song_total_count = SongTotalCount.joins(:song, :user).select('songs.*, song_total_counts.*').where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).first
+    if @song_total_count.blank?
+      return
+    end
+
+    where_params = {}
+    where_params[:users] = {id: @user.id}
+    where_params[:songs] = {title: params[:title], artist: params[:artist]}
+    @to = params[:to] || Date.today.to_s
+    where_date = params[:from].blank? ? ["date < ?", @to] : {:song_day_counts => {date: [params[:from]..@to]}}
+
     details = []
-    SongDayCount.joins(:song, :user).where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).order(:date).each.with_index do |song_day_count, index|
+    SongDayCount.joins(:song, :user).where(where_params).where(where_date).order(:date).each.with_index do |song_day_count, index|
       if index == 0
         @first = song_day_count.date
       end
-      details[Date.today.to_date - song_day_count.date] = {:skip_count => song_day_count.skip_count, :play_count => song_day_count.play_count, :date => song_day_count.date}
+      details[@to.to_date - song_day_count.date] = {:skip_count => song_day_count.skip_count, :play_count => song_day_count.play_count, :date => song_day_count.date}
+    end
+
+    # from がある場合、その from の日から to の日の配列を作る
+    if !params[:from].blank?
+      ((@first || @to.to_date + 1) - params[:from].to_date).to_i.times do
+        details.push(nil)
+      end
     end
     p @details = details.reverse
-    p @first
   end
 
   # GET /song_histories/1
