@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  resources :push_tokens
-  resources :songs
-  resources :devices
+  resources :push_tokens, defaults: { format: :json }
+  resources :songs, defaults: { format: :json }
+  resources :devices, defaults: { format: :json }
   root :to => 'users#index'
   #resources :users
 
   resources :users, only: [:index, :create, :new]
-  resource :user, path: '/users/me', only: [:show, :edit, :update, :destroy], defaults: { format: :json }
+  resource :users, path: '/users/me', only: [:show, :edit, :update, :destroy], defaults: { format: :json }
 
   resources :song_histories, defaults: { format: :json }
   # resources :song_histories

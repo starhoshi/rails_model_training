@@ -1,4 +1,7 @@
 json.array!(@songs) do |song|
-  json.extract! song, :id, :title, :artist
-  json.url song_url(song, format: :json)
+  json.song do
+    json.(song, :id, :title, :artist)
+  end
+  json.play_count song.play_count
+  json.skip_count song.skip_count
 end
