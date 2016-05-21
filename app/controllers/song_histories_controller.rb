@@ -32,6 +32,7 @@ class SongHistoriesController < ApplicationController
 
     respond_to do |format|
       if @song_history.save
+        SongDayCount.update_or_create_by_song_history(@song_history)
         format.html { redirect_to @song_history, notice: 'Song history was successfully created.' }
         format.json { render :nothing => true, status: :created, location: @song_history }
       else
