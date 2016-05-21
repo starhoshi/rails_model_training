@@ -10,23 +10,25 @@ class SongHistoriesController < ApplicationController
       return
     end
 
+    @first = SongDayCount.where(song_id: @song_total_count.song.id, user_id: @user.id).order(:date).first
+
     where_params = {}
-    where_params[:users] = {id: @user.id}
-    where_params[:songs] = {title: params[:title], artist: params[:artist]}
+    where_params[:user_id] = @user.id
+    where_params[:song_id] = @song_total_count.song.id
     @to = params[:to] || Date.today.to_s
     where_date = params[:from].blank? ? ["date < ?", @to] : {:song_day_counts => {date: [params[:from]..@to]}}
 
     details = []
     SongDayCount.joins(:song, :user).where(where_params).where(where_date).order(:date).each.with_index do |song_day_count, index|
       if index == 0
-        @first = song_day_count.date
+        @first_date = song_day_count.date
       end
       details[@to.to_date - song_day_count.date] = {:skip_count => song_day_count.skip_count, :play_count => song_day_count.play_count, :date => song_day_count.date}
     end
 
     # from がある場合、その from の日から to の日の配列を作る
     if !params[:from].blank?
-      ((@first || @to.to_date + 1) - params[:from].to_date).to_i.times do
+      ((@first_date || @to.to_date + 1) - params[:from].to_date).to_i.times do
         details.push(nil)
       end
     end

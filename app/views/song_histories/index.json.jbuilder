@@ -12,7 +12,7 @@ else
   json.from params[:from]
   json.to params[:to]
   json.duration duration
-  json.first @first
+  json.first @first.date
   json.total_play_count @song_total_count.play_count
   json.total_skip_count @song_total_count.skip_count
   json.details @details.each_with_index.to_a do |details, index|
