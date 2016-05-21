@@ -1,11 +1,21 @@
 class SongHistoriesController < ApplicationController
-  before_action :authenticate, only: [:show, :create]
+  before_action :authenticate, only: [:index, :show, :create]
   # before_action :set_song_history, only: [:show, :edit, :update, :destroy]
 
   # GET /song_histories
   # GET /song_histories.json
   def index
-    @song_histories = SongHistory.all
+    p params
+    @song_total_count = SongTotalCount.joins(:song, :user).where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).first
+    details = []
+    SongDayCount.joins(:song, :user).where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).order(:date).each.with_index do |song_day_count, index|
+      if index == 0
+        @first = song_day_count.date
+      end
+      details[Date.today.to_date - song_day_count.date] = {:skip_count => song_day_count.skip_count, :play_count => song_day_count.play_count, :date => song_day_count.date}
+    end
+    p @details = details.reverse
+    p @first
   end
 
   # GET /song_histories/1

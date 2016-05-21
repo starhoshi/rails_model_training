@@ -17,4 +17,5 @@ class SongDayCount < ApplicationRecord
     end
     song_day_count.save
   end
+
 end
