@@ -6,7 +6,7 @@ class SongHistoriesController < ApplicationController
   # GET /song_histories.json
   def index
     p params
-    @song_total_count = SongTotalCount.joins(:song, :user).where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).first
+    p @song_total_count = SongTotalCount.joins(:song, :user).select('songs.*, song_total_counts.*').where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).first
     details = []
     SongDayCount.joins(:song, :user).where(songs: {title: params[:title], artist: params[:artist]}, users: {id: @user.id}).order(:date).each.with_index do |song_day_count, index|
       if index == 0

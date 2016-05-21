@@ -1,8 +1,3 @@
-# json.array!(@song_histories) do |song_history|
-#   json.extract! song_history, :id, :user_id, :song_id, :device_id, :media_id, :track_source, :album, :duration, :genre, :album_art_uri, :track_number, :num_tracks, :recorded_at, :point, :accuracy, :altitude, :record_type
-#   json.url song_history_url(song_history, format: :json)
-# end
-
 if @first.blank?
   json.details []
   json.first nil
@@ -11,11 +6,12 @@ if @first.blank?
   json.total_skip_count 0
   json.duration 0
 else
-  duration = @details.count
   today = Date.today
+  duration = @details.count
 
-  json.first @first
+  json.song(@song_total_count.song, :id, :title, :artist)
   json.duration duration
+  json.first @first
   json.total_play_count @song_total_count.play_count
   json.total_skip_count @song_total_count.skip_count
   json.details @details.each_with_index.to_a do |details, index|
