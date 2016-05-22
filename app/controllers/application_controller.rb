@@ -18,4 +18,9 @@ class ApplicationController < ActionController::Base
     self.headers['Authorization'] = 'Bearer realm="Application"'
     render json: {:message => "Unauthorized"}, status: 401
   end
+
+  def render_404(e = nil)
+    logger.info "Rendering 404 with exception: #{e.message}" if e
+    render json: { error: '404 error' }, status: 404
+  end
 end

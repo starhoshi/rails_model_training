@@ -5,13 +5,16 @@ class PlaylistsController < ApplicationController
   # GET /playlists
   # GET /playlists.json
   def index
-    @playlists = Playlist.all
+    @playlists = Playlist.where(user_id: @user.id, active: true)
   end
 
   # GET /playlists/1
   # GET /playlists/1.json
   def show
-    p @playlist_songs = PlaylistSong.joins(:song).select('songs.*, playlist_songs.*')
+    if @playlist.nil?
+      render_404
+    end
+    @playlist_songs = PlaylistSong.joins(:song).select('songs.*, playlist_songs.*')
       .where(playlist_id: params[:id], active: true)
   end
 
@@ -58,7 +61,8 @@ class PlaylistsController < ApplicationController
   # DELETE /playlists/1
   # DELETE /playlists/1.json
   def destroy
-    @playlist.destroy
+    @playlist.active = false
+    @playlist.save
     respond_to do |format|
       format.html { redirect_to playlists_url, notice: 'Playlist was successfully destroyed.' }
       format.json { head :no_content }
@@ -68,7 +72,7 @@ class PlaylistsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
-      @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}).last
+      @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}, active: true).last
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
