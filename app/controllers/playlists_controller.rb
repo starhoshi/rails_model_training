@@ -1,6 +1,6 @@
 class PlaylistsController < ApplicationController
   before_action :authenticate
-  before_action :set_playlist, only: [:show, :edit, :update, :destroy]
+  before_action :set_playlist, only: [:update_songs, :update_name, :show, :edit, :update, :destroy]
 
   # GET /playlists
   # GET /playlists.json
@@ -11,9 +11,6 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1
   # GET /playlists/1.json
   def show
-    if @playlist.nil?
-      render_404
-    end
     @playlist_songs = PlaylistSong.joins(:song).select('songs.*, playlist_songs.*')
       .where(playlist_id: params[:id], active: true)
   end
@@ -46,15 +43,34 @@ class PlaylistsController < ApplicationController
 
   # PATCH/PUT /playlists/1
   # PATCH/PUT /playlists/1.json
-  def update
+  def update_name
+    @playlist.name = params[:name]
     respond_to do |format|
-      if @playlist.update(playlist_params)
+      if @playlist.save
         format.html { redirect_to @playlist, notice: 'Playlist was successfully updated.' }
-        format.json { render :show, status: :ok, location: @playlist }
+        format.json { render :create, status: :ok, location: @playlist }
       else
         format.html { render :edit }
         format.json { render json: @playlist.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_songs
+    p params
+    if params[:name]
+      @playlist.name = params[:name]
+    end
+
+    if @playlist.save
+      PlaylistSong.where(playlist_id: @playlist.id).update_all(active: false)
+      playlist_params[:songs].each do |song_params|
+        song = Song.find_or_create_from_song(song_params[:title], song_params[:artist])
+        playlist_song = PlaylistSong.create_by_params(@playlist.id, song.id)
+      end
+      render :create, status: :ok, location: @playlist
+    else
+      render json: @playlist.errors, status: :unprocessable_entity
     end
   end
 
@@ -73,6 +89,9 @@ class PlaylistsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
       @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}, active: true).last
+      if @playlist.nil?
+        render_404
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
