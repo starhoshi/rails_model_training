@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'ranking/songs',to: 'ranking#songs',  defaults: { format: :json }
-  get 'ranking/artists',to: 'ranking#artists',  defaults: { format: :json }
+  get 'ranking/my/songs',to: 'ranking#my_songs',  defaults: { format: :json }
+  get 'ranking/my/artists',to: 'ranking#my_artists',  defaults: { format: :json }
 
   resources :push_tokens, defaults: { format: :json }
   resources :songs, defaults: { format: :json }
