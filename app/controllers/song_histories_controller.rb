@@ -16,7 +16,7 @@ class SongHistoriesController < ApplicationController
     where_params[:user_id] = @user.id
     where_params[:song_id] = @song_total_count.song.id
     @to = params[:to] || Date.today.to_s
-    where_date = params[:from].blank? ? ["date < ?", @to] : {:song_day_counts => {date: [params[:from]..@to]}}
+    where_date = params[:from].blank? ? ["date <= ?", @to] : {:song_day_counts => {date: [params[:from]..@to]}}
 
     details = []
     SongDayCount.joins(:song, :user).where(where_params).where(where_date).order(:date).each.with_index do |song_day_count, index|
