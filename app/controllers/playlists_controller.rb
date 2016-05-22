@@ -11,6 +11,8 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1
   # GET /playlists/1.json
   def show
+    p @playlist_songs = PlaylistSong.joins(:song).select('songs.*, playlist_songs.*')
+      .where(playlist_id: params[:id], active: true)
   end
 
   # GET /playlists/new
@@ -25,16 +27,17 @@ class PlaylistsController < ApplicationController
   # POST /playlists
   # POST /playlists.json
   def create
-    @playlist = Playlist.new(playlist_params)
+    p playlist_params[:songs]
+    @playlist = Playlist.create_by_params(playlist_params, @user.id)
 
-    respond_to do |format|
-      if @playlist.save
-        format.html { redirect_to @playlist, notice: 'Playlist was successfully created.' }
-        format.json { render :show, status: :created, location: @playlist }
-      else
-        format.html { render :new }
-        format.json { render json: @playlist.errors, status: :unprocessable_entity }
+    if @playlist.save
+      playlist_params[:songs].each do |song_params|
+        song = Song.find_or_create_from_song(song_params[:title], song_params[:artist])
+        playlist_song = PlaylistSong.create_by_params(@playlist.id, song.id)
       end
+      render :create, status: :created, location: @playlist
+    else
+      render json: @playlist.errors, status: :unprocessable_entity
     end
   end
 
@@ -65,11 +68,11 @@ class PlaylistsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
-      @playlist = Playlist.find(params[:id])
+      @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}).last
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def playlist_params
-      params.require(:playlist).permit(:user_id, :name, :active)
+      params.permit(:name, :songs => [:title, :artist])
     end
 end
