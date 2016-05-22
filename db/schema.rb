@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521122045) do
+ActiveRecord::Schema.define(version: 20160522075248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,24 @@ ActiveRecord::Schema.define(version: 20160521122045) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_devices_on_user_id", using: :btree
+  end
+
+  create_table "playlist_songs", force: :cascade do |t|
+    t.integer  "playlist_id"
+    t.integer  "song_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["playlist_id"], name: "index_playlist_songs_on_playlist_id", using: :btree
+    t.index ["song_id"], name: "index_playlist_songs_on_song_id", using: :btree
+  end
+
+  create_table "playlists", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.boolean  "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_playlists_on_user_id", using: :btree
   end
 
   create_table "push_tokens", force: :cascade do |t|
@@ -114,6 +132,9 @@ ActiveRecord::Schema.define(version: 20160521122045) do
   end
 
   add_foreign_key "devices", "users"
+  add_foreign_key "playlist_songs", "playlists"
+  add_foreign_key "playlist_songs", "songs"
+  add_foreign_key "playlists", "users"
   add_foreign_key "push_tokens", "users"
   add_foreign_key "social_profiles", "users"
   add_foreign_key "song_day_counts", "songs"
