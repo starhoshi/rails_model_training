@@ -1,4 +1,4 @@
-class PlaylistsController < ApplicationController
+class Api::V1::PlaylistsController < Api::ApiController
   before_action :authenticate
   before_action :set_playlist, only: [:update_songs, :update_name, :show, :edit, :update, :destroy]
 
@@ -48,7 +48,7 @@ class PlaylistsController < ApplicationController
     respond_to do |format|
       if @playlist.save
         format.html { redirect_to @playlist, notice: 'Playlist was successfully updated.' }
-        format.json { render :create, status: :ok, location: @playlist }
+        format.json { render :create, status: :ok}
       else
         format.html { render :edit }
         format.json { render json: @playlist.errors, status: :unprocessable_entity }
@@ -68,7 +68,7 @@ class PlaylistsController < ApplicationController
         song = Song.find_or_create_from_song(song_params[:title], song_params[:artist])
         playlist_song = PlaylistSong.create_by_params(@playlist.id, song.id)
       end
-      render :create, status: :ok, location: @playlist
+      render :create, status: :ok
     else
       render json: @playlist.errors, status: :unprocessable_entity
     end

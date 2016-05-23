@@ -1,4 +1,4 @@
-class RankingController < ApplicationController
+class Api::V1::RankingController < Api::ApiController
   before_action :authenticate, only: [:my_songs, :my_artists]
 
   def my_songs

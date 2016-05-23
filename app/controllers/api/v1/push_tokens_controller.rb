@@ -1,4 +1,4 @@
-class PushTokensController < ApplicationController
+class Api::V1::PushTokensController < Api::ApiController
   before_action :set_push_token, only: [:show, :edit, :update, :destroy]
 
   # GET /push_tokens

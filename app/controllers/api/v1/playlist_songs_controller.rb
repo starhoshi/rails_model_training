@@ -1,4 +1,5 @@
-class PlaylistSongsController < ApplicationController
+class Api::V1::PlaylistSongsController < Api::ApiController
+
   before_action :set_playlist_song, only: [:show, :edit, :update, :destroy]
 
   # GET /playlist_songs

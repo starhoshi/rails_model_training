@@ -1,4 +1,4 @@
-class SongHistoriesController < ApplicationController
+class Api::V1::SongHistoriesController < Api::ApiController
   before_action :authenticate, only: [:index, :show, :create]
   # before_action :set_song_history, only: [:show, :edit, :update, :destroy]
 
@@ -62,7 +62,7 @@ class SongHistoriesController < ApplicationController
         SongDayCount.update_or_create_by_song_history(@song_history)
         SongTotalCount.update_or_create_by_song_history(@song_history)
         format.html { redirect_to @song_history, notice: 'Song history was successfully created.' }
-        format.json { render :nothing => true, status: :created, location: @song_history }
+        format.json { render :nothing => true, status: :created}
       else
         format.html { render :new }
         format.json { render json: @song_history.errors, status: :unprocessable_entity }

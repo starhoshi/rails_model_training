@@ -1,4 +1,4 @@
-class SongsController < ApplicationController
+class Api::V1::SongsController < Api::ApiController
   before_action :authenticate, only: [:index]
   before_action :set_song, only: [:show, :edit, :update, :destroy]
 
