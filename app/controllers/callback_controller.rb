@@ -11,7 +11,4 @@ class CallbackController < ApplicationController
     end
     redirect_to "musiced://callback?token=#{user.auth_token}"
   end
-
-  def destroy
-  end
 end

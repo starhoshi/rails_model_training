@@ -35,7 +35,7 @@ class Api::V1::PlaylistsController < Api::ApiController
         song = Song.find_or_create_from_song(song_params[:title], song_params[:artist])
         playlist_song = PlaylistSong.create_by_params(@playlist.id, song.id)
       end
-      render :create, status: :created, location: @playlist
+      render :create, status: :created
     else
       render json: @playlist.errors, status: :unprocessable_entity
     end
