@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+    end
+  end
+
   root :to => 'users#index'
   get 'users/login',to: 'users#index',  defaults: { format: :html }
   get 'auth/:provider/callback', to: 'callback#create'
@@ -7,9 +12,11 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       resources :playlist_songs,  defaults: { format: :json }
-      put '/playlists/:id', to: 'playlists#update_songs'
-      patch '/playlists/:id', to: 'playlists#update_name'
+      put '/playlists/:id', to: 'playlists#update'
       resources :playlists,  defaults: { format: :json }
+      namespace :playlists do
+        patch ':id/name', to: 'name#update'
+      end
 
       get 'ranking/my/songs',to: 'ranking#my_songs',  defaults: { format: :json }
       get 'ranking/my/artists',to: 'ranking#my_artists',  defaults: { format: :json }

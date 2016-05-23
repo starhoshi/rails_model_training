@@ -43,20 +43,7 @@ class Api::V1::PlaylistsController < Api::ApiController
 
   # PATCH/PUT /playlists/1
   # PATCH/PUT /playlists/1.json
-  def update_name
-    @playlist.name = params[:name]
-    respond_to do |format|
-      if @playlist.save
-        format.html { redirect_to @playlist, notice: 'Playlist was successfully updated.' }
-        format.json { render :create, status: :ok}
-      else
-        format.html { render :edit }
-        format.json { render json: @playlist.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def update_songs
+  def update
     p params
     if params[:name]
       @playlist.name = params[:name]
@@ -85,7 +72,7 @@ class Api::V1::PlaylistsController < Api::ApiController
     end
   end
 
-  private
+    protected
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
       @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}, active: true).last
