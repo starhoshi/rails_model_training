@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :playlist_songs,  defaults: { format: :json }
-  put '/playlists/:id', to: 'playlists#update_songs' ,  defaults: { format: :json}
-  patch '/playlists/:id', to: 'playlists#update_name',  defaults: { format: :json}
+  put '/playlists/:id', to: 'playlists#update_songs'
+  patch '/playlists/:id', to: 'playlists#update_name'
   resources :playlists,  defaults: { format: :json }
 
   get 'ranking/my/songs',to: 'ranking#my_songs',  defaults: { format: :json }
@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   root :to => 'users#index'
   #resources :users
 
-  resources :users, only: [:index, :create, :new]
+  resources :users, only: [:create, :new]
+  get 'users/login',to: 'users#index',  defaults: { format: :html }
   resource :users, path: '/users/me', only: [:show, :edit, :update, :destroy], defaults: { format: :json }
 
   resources :song_histories, defaults: { format: :json }
