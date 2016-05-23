@@ -1,6 +1,5 @@
 class Api::V1::UsersController < Api::ApiController
   before_action :authenticate, only: [:show]
-  # before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_user, only: [:edit, :update, :destroy]
 
   # GET /users
@@ -15,15 +14,6 @@ class Api::V1::UsersController < Api::ApiController
     @user
     @device = Device.where(user_id: @user.id)
     @profile = SocialProfile.where(user_id: @user.id)
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
   end
 
   # POST /users

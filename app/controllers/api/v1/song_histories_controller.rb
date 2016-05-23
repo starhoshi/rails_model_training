@@ -1,6 +1,6 @@
 class Api::V1::SongHistoriesController < Api::ApiController
-  before_action :authenticate, only: [:index, :show, :create]
-  # before_action :set_song_history, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate
+  # before_action :set_song_history, only: [:index, :edit, :update, :destroy]
 
   # GET /song_histories
   # GET /song_histories.json
@@ -39,15 +39,6 @@ class Api::V1::SongHistoriesController < Api::ApiController
   # GET /song_histories/1.json
   def show
     p params
-  end
-
-  # GET /song_histories/new
-  def new
-    @song_history = SongHistory.new
-  end
-
-  # GET /song_histories/1/edit
-  def edit
   end
 
   # POST /song_histories
@@ -102,7 +93,6 @@ class Api::V1::SongHistoriesController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def song_history_params
-    # params.permit!
     params.permit(:media_id, :track_source, :duration, :genre, :album, :album_art_uri, :track_number, :num_tracks, :recorded_at, :latitude, :longitude, :accuracy, :altitude, :record_type, {:device => [:model, :os]}, :artist, :title)
   end
 end

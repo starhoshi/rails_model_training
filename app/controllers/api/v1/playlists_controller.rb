@@ -12,16 +12,7 @@ class Api::V1::PlaylistsController < Api::ApiController
   # GET /playlists/1.json
   def show
     @playlist_songs = PlaylistSong.joins(:song).select('songs.*, playlist_songs.*')
-      .where(playlist_id: params[:id], active: true)
-  end
-
-  # GET /playlists/new
-  def new
-    @playlist = Playlist.new
-  end
-
-  # GET /playlists/1/edit
-  def edit
+    .where(playlist_id: params[:id], active: true)
   end
 
   # POST /playlists
@@ -72,17 +63,17 @@ class Api::V1::PlaylistsController < Api::ApiController
     end
   end
 
-    protected
-    # Use callbacks to share common setup or constraints between actions.
-    def set_playlist
-      @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}, active: true).last
-      if @playlist.nil?
-        render_404
-      end
+  protected
+  # Use callbacks to share common setup or constraints between actions.
+  def set_playlist
+    @playlist = Playlist.joins(:user).where(id: params[:id], users: {id:@user.id}, active: true).last
+    if @playlist.nil?
+      render_404
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def playlist_params
-      params.permit(:name, :songs => [:title, :artist])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def playlist_params
+    params.permit(:name, :songs => [:title, :artist])
+  end
 end

@@ -1,5 +1,5 @@
 class Api::V1::RankingController < Api::ApiController
-  before_action :authenticate, only: [:my_songs, :my_artists]
+  before_action :authenticate
 
   def my_songs
     @songs = SongTotalCount.joins(:user, :song).select("song_total_counts.*, songs.*").where(user_id: @user.id).order(play_count: :desc)
